@@ -1,0 +1,80 @@
+/******************************************************************
+Stylesheet: Login Stylesheet
+
+For more info, check out the codex:
+http://codex.wordpress.org/Creating_Admin_Themes
+
+******************************************************************/
+/* the form box */
+/*
+This is the Wordpress logo in the admin area.
+You'll have to load your own images and mess
+with the width and height.
+*/
+
+@font-face {
+  font-family: 'Arvo Regular';
+  src: local('Arvo Regular'), local('ArvoRegular'), url('../fonts/arvo_regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Arvo Gruen';
+  src: local('Arvo Gruen'), local('ArvoGruen'), url('../fonts/arvo_green.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'PT Sans';
+  src: local('PT Sans'), local('PTSans-Regular'), url('../fonts/ptsans-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+@font-face {
+  font-family: 'PT Sans Bold';
+  src: local('PT Sans Bold'), local('PTSans-Bold'), url('../fonts/ptsans-bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+
+
+body.login {
+	background: #559448 url('../images/body_bg.jpg') top center repeat fixed;
+	font-family: 'Arvo Regular', 'Arvo Gruen', Trebuchet, Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;background-size: cover;
+}
+
+body.login form {
+	background: #fff;border-radius: 0; border: 0;box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+}
+body.login form label {color: #5dae59; font-family: 'Arvo Regular', 'Arvo Gruen', Trebuchet, Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;font-weight: normal;}
+
+body.login p#nav a, body.login p#backtoblog a {color:#ffe000!important;text-shadow: 0 0 0;}
+body.login p#nav a:hover, body.login p#backtoblog a:hover {color:#fff!important;text-shadow: 0 0 0;}
+
+body.login .button-primary {display: inline-block;padding: 0.5em 1em!important;height: auto!important; border: 0;text-shadow:0 0 0;color: #fff;box-shadow: 0 0 0;border-radius:0;font-weight: normal;font-family: 'Arvo Gruen', Trebuchet, Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;width: auto;text-transform: uppercase;background: #e6007e;font-size: 1em;
+}
+	
+
+body.login .button-primary:hover {background: #ffee00;border-color: #166608;box-shadow: 0 0 0;color: #46962b;text-shadow: 0 0 0;			}
+ 
+
+.login h1 a {
+  background: url() no-repeat top center;
+  /* make sure to replace this! */
+  width: 326px;
+  height: 67px;
+  text-indent: -9999px;
+  overflow: hidden;
+  padding-bottom: 15px;
+  display: block; }
+
+
+body.login form .input { }
+
