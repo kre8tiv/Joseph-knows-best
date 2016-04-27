@@ -427,6 +427,7 @@ a img.aligncenter {display: block; margin-left: auto; margin-right: auto}
 			div.archive-title {margin: 1em;color: #fff;	}
 			div.archive-title h1 {display: inline-block;color: #fff;margin-bottom: 0.2em;}
 				.archive-title p {font-family: 'Arvo Regular', 'Arvo Gruen', Trebuchet, Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;}
+				.archive-title p a {color: #fe0;}
 
 		
 		
