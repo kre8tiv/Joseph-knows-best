@@ -1,20 +1,60 @@
 <?php
 
 //SHORTCODES
-function kr8_sitemap() {
+function kr8_sitemap( $atts, $content = null ) {
+	
+	extract(shortcode_atts(array(
+      'aussehen' => '',
+      'parent' => '',
+      'ids' => '',
+	  ), $atts));
+	  
 
-//get current page ID
-$the_id = get_the_ID();
+	  
+	  if(!empty($parent)){
+			
+			
+				$smargs = array(
+					'exclude' => implode(',', get_option('sep_exclude', array())),
+					'child_of'     => $parent,
+					'title_li'     => '',
+					'parent'       => $parent,
+					'sort_order'	=> 'ASC',
+					'sort_column'	=> 'post_name'
+					
+				);
+			
+				$smitem = get_pages( $smargs );
 
-	$smargs = array(
-		'child_of'     => $the_id,
-		'title_li'     => '',
-		'parent'       => $the_id,
-		'sort_order'	=> 'ASC',
-		'sort_column'	=> 'menu_order'
-	);
+			
+	}
+	else {
+		
+			//get current page ID
+			$the_id = get_the_ID();
+			
+				$smargs = array(
+					'exclude' => implode(',', get_option('sep_exclude', array())),
+					'child_of'     => $the_id,
+					'title_li'     => '',
+					'parent'       => $the_id,
+					'sort_order'	=> 'ASC',
+					'sort_column'	=> 'post_name'
+				);
+			
+				$smitem = get_pages( $smargs );
 
-	$smitem = get_pages( $smargs );
+	}	
+
+
+
+
+if(!empty($ids)) {
+	
+
+	$smitem = get_pages( array('include' => $ids) );
+	
+}	  
 
 
 
@@ -29,7 +69,7 @@ foreach($smitem as $value){
 } 
 
 
- return '<nav><ul class="sitemap sitemap-thumb">' . $children . '</ul></nav>';
+ return '<nav><ul class="sitemap sitemap-thumb clearfix ' .$aussehen .'">' . $children . '</ul></nav>';
 
 
 
@@ -81,6 +121,63 @@ function the_content_filter($content) {
 	return $rep;
 
 }
+
+
+//Query Posts ***************
+
+
+
+function beitraege_lists($atts, $content = null) {
+	extract(shortcode_atts(array(
+		"ids" => '',
+		'aussehen' => '',
+	), $atts));
+	global $wp_query,$paged,$post;
+	$temp = $wp_query;
+	$wp_query= null;
+	$wp_query = new WP_Query();
+	$ids = explode(',', $ids);
+	if(!empty($ids)){
+			
+			$args = array(
+							'post_type' => 'any',
+							//'post__in' => array( $ids ),
+							'post__in' => 	$ids ,							
+							'orderby' => 'post__in',
+							'posts_per_page' => -1,
+							'ignore_sticky_posts' => 1
+			);
+	}
+	else {
+		
+			$args = array(
+					'post_type' => 'any',
+					'page_id' => 20,
+					'posts_per_page' => 1,
+					'ignore_sticky_posts' => 1
+			);
+		
+	}	
+	$wp_query->query($args);
+	ob_start();
+
+	?>
+	<section class="clearfix insidelist <?php echo $aussehen;?>">
+	<?php while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
+	
+		<?php get_template_part( 'content-list', get_post_format() ); ?>
+	<?php endwhile; ?>
+	</section>
+
+
+
+	<?php $wp_query = null; $wp_query = $temp;
+	$content = ob_get_contents();
+	ob_end_clean();
+	return $content;
+}
+add_shortcode("beitraege", "beitraege_lists");
+
 
 
 
@@ -595,7 +692,7 @@ function icon_shortcode( $atts ) {
 		), $atts));
 
 		
-		return '<p class="icon"><span class="fa '.$symbol.' '.$groesse.'"></span></p>';
+		return '<i class="icon"><span class="fa '.$symbol.' '.$groesse.'"></span></i>';
 
 }
 add_shortcode( 'icon', 'icon_shortcode' );

@@ -47,14 +47,25 @@ if (!function_exists('kr8_register_sidebars')) {
 			
 			
 			register_sidebar(array(
-				'name' => 'Startseite - Actionbox',
-				'description'   => 'Drei Widgets auf der Startseite',
-				'id' => 'homeone',
+				'name' => 'Kampagnenseite - Actionbox',
+				'description'   => 'Drei Widgets: Werde aktiv',
+				'id' => 'campaignone',
 				'before_widget' => "\n\t\t" . '<div id="%1$s" class="widget %2$s">',
 				'after_widget' => '</div>',
-				'before_title' => "\n\t" . '<h2>',
-				'after_title' => '</h2>',
+				'before_title' => "\n\t" . '<h3>',
+				'after_title' => '</h3>',
 			));	
+			
+			register_sidebar(array(
+				'name' => 'Kampagnenseite - Infobox',
+				'description'   => 'Drei Widgets: Erfahre mehr',
+				'id' => 'campaigntwo',
+				'before_widget' => "\n\t\t" . '<div id="%1$s" class="widget %2$s">',
+				'after_widget' => '</div>',
+				'before_title' => "\n\t" . '<h3>',
+				'after_title' => '</h3>',
+			));				
+			
 			
 			register_sidebar(array(
 				'name' => 'Startseite - Infoleiste',

@@ -22,6 +22,10 @@ function kr8mb_add()
    		if($pageTemplate == 'page-story.php' ) {
 	 		add_meta_box( 'kr8mb_page_story', 'Inhalt', 'kr8mb_page_story_cb', 'page', 'normal', '' );
    		}
+   		
+   		if($pageTemplate == 'page-home-campaign.php' ) {
+	 		add_meta_box( 'kr8mb_page_campaign', 'Inhalt', 'kr8mb_page_campaign_cb', 'page', 'normal', '' );
+   		}
    	
    	 }
 }
@@ -148,6 +152,66 @@ function kr8mb_page_story_save( $post_id )
 }
 
 
+
+/** SEITEN: Kampagne **/
+function kr8mb_page_campaign_cb($post)
+{
+    // $post is already set, and contains an object: the WordPress post
+    global $post;
+    $values = get_post_custom( $post->ID );
+    $cta = isset( $values['kr8mb_page_campaign_cta'] ) ? esc_attr( $values['kr8mb_page_campaign_cta'][0] ) : '';
+
+
+    
+     
+    // We'll use this nonce field later on when saving.
+    wp_nonce_field( 'my_meta_box_nonce', 'meta_box_nonce' );
+    ?>
+    <table class="form-table"><tbody>
+    <tr>
+	    <th scope="row"><label for="kr8mb_page_campaign_cta">Menüpunkte</label></th>
+        <td><textarea type="text" name="kr8mb_page_campaign_cta" id="kr8mb_page_campaign_cta" rows="5" cols="50"><?php echo $cta; ?></textarea><br><span class="description">Menüelemente für das Inhaltsverzeichnis. Nutze: li a. </span></td>
+    </tr>
+     
+    </tbody></table>
+    <?php    
+}
+
+
+add_action( 'save_post', 'kr8mb_page_campaign_save' );
+function kr8mb_page_campaign_save( $post_id )
+{
+    // Bail if we're doing an auto save
+    if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+     
+    // if our nonce isn't there, or we can't verify it, bail
+    if( !isset( $_POST['meta_box_nonce'] ) || !wp_verify_nonce( $_POST['meta_box_nonce'], 'my_meta_box_nonce' ) ) return;
+     
+    // if our current user can't edit this post, bail
+    if( !current_user_can( 'edit_post', $post_id ) ) return;
+     
+    // now we can actually save the data
+    $allowed = array( 
+        'li' => $default_attribs,
+        'a' => array()
+    );
+    
+        // now we can actually save the data
+    $allowed = array( 
+        'li' => array(),
+        'a' => array( // on allow a tags
+            'href' => array() // and those anchors can only have href attribute
+        )
+    );
+     
+    // Make sure your data is set before trying to save it
+	if( isset( $_POST['kr8mb_page_campaign_cta'] ) )
+        update_post_meta( $post_id, 'kr8mb_page_campaign_cta', wp_kses( $_POST['kr8mb_page_campaign_cta'], $allowed ) );
+                 
+}
+
+
+
 	
 
 /** PERSONEN: Kontaktdaten **/
@@ -161,6 +225,7 @@ function kr8mb_pers_contact_cb($post)
     $email = isset( $values['kr8mb_pers_contact_email'] ) ? esc_attr( $values['kr8mb_pers_contact_email'][0] ) : '';
 	$facebook = isset( $values['kr8mb_pers_contact_facebook'] ) ? esc_attr( $values['kr8mb_pers_contact_facebook'][0] ) : '';
 	$twitter = isset( $values['kr8mb_pers_contact_twitter'] ) ? esc_attr( $values['kr8mb_pers_contact_twitter'][0] ) : '';
+	$instagram = isset( $values['kr8mb_pers_contact_instagram'] ) ? esc_attr( $values['kr8mb_pers_contact_instagram'][0] ) : '';
 	$anschrift = isset( $values['kr8mb_pers_contact_anschrift'] ) ? esc_html( $values['kr8mb_pers_contact_anschrift'][0] ) : '';
 	$telefon = isset( $values['kr8mb_pers_contact_telefon'] ) ? esc_html( $values['kr8mb_pers_contact_telefon'][0] ) : '';
 	$selected = isset( $values['my_meta_box_select'] ) ? esc_attr( $values['my_meta_box_select'][0] ) : '';
@@ -184,7 +249,13 @@ function kr8mb_pers_contact_cb($post)
         <td><input type="text" name="kr8mb_pers_contact_facebook" id="kr8mb_pers_contact_facebook" value="<?php echo $facebook; ?>" /><br><span class="description">Vollständiger Link zum Facebook-Profil, inkl. http://</span></td>
 	    <th scope="row"><label for="kr8mb_pers_contact_twitter">Twitter</label></th>
         <td><input type="text" name="kr8mb_pers_contact_twitter" id="kr8mb_pers_contact_twitter" value="<?php echo $twitter; ?>" /><br><span class="description">Nur der Twitter-Nutzername ohne @, z.b. gruenenrw.</span></td>
-    </tr>    
+    </tr>
+    <tr>
+	    <th scope="row"><label for="kr8mb_pers_contact_instagram">Instagram</label></th>
+        <td><input type="text" name="kr8mb_pers_contact_instagram" id="kr8mb_pers_contact_instagram" value="<?php echo $instagram; ?>" /><br><span class="description">Vollständiger Link zum Instagram-Profil, inkl. http://</span></td>
+	    <th scope="row"></th>
+        <td></td>
+    </tr>          
     <tr>
 	    <th scope="row"><label for="kr8mb_pers_contact_anschrift">Anschrift</label></th>
         <td><textarea name="kr8mb_pers_contact_anschrift" id="kr8mb_pers_contact_anschrift"><?php echo $anschrift; ?></textarea><br><span class="description">Platz für Anschrift, Telefon, Fax, etc.</span></td>
@@ -227,6 +298,8 @@ function kr8mb_pers_contact_save( $post_id )
         update_post_meta( $post_id, 'kr8mb_pers_contact_facebook', wp_kses( $_POST['kr8mb_pers_contact_facebook'], $allowed ) );
     if( isset( $_POST['kr8mb_pers_contact_twitter'] ) )
         update_post_meta( $post_id, 'kr8mb_pers_contact_twitter', wp_kses( $_POST['kr8mb_pers_contact_twitter'], $allowed ) );
+    if( isset( $_POST['kr8mb_pers_contact_instagram'] ) )
+        update_post_meta( $post_id, 'kr8mb_pers_contact_instagram', wp_kses( $_POST['kr8mb_pers_contact_instagram'], $allowed ) );
     if( isset( $_POST['kr8mb_pers_contact_telefon'] ) )
         update_post_meta( $post_id, 'kr8mb_pers_contact_telefon', wp_kses( $_POST['kr8mb_pers_contact_telefon'], $allowed ) );  
     if( isset( $_POST['kr8mb_pers_contact_anschrift'] ) )
@@ -246,6 +319,7 @@ function kr8mb_pers_position_cb($post)
     global $post;
     $values = get_post_custom( $post->ID );
     $excerpt = isset( $values['kr8mb_pers_excerpt'] ) ? esc_html( $values['kr8mb_pers_excerpt'][0] ) : '';
+    $motivation = isset( $values['kr8mb_pers_motivation'] ) ? esc_html( $values['kr8mb_pers_motivation'][0] ) : '';
     $amt = isset( $values['kr8mb_pers_pos_amt'] ) ? esc_attr( $values['kr8mb_pers_pos_amt'][0] ) : '';
     $listenplatz = isset( $values['kr8mb_pers_pos_listenplatz'] ) ? esc_attr( $values['kr8mb_pers_pos_listenplatz'][0] ) : '';
     $sortierung = isset( $values['kr8mb_pers_pos_sortierung'] ) ? esc_attr( $values['kr8mb_pers_pos_sortierung'][0] ) : '';
@@ -262,6 +336,10 @@ function kr8mb_pers_position_cb($post)
     <tr>
 	    <th scope="row"><label for="kr8mb_pers_excerpt">Kurzbeschreibung</label></th>
         <td><textarea name="kr8mb_pers_excerpt" id="kr8mb_pers_excerpt"><?php echo $excerpt; ?></textarea><br><span class="description">Kurzbeschreibung, im Idealfall in 140 Zeichen.</span></td>
+        
+        <th scope="row"><label for="kr8mb_pers_motivation">Motivation</label></th>
+        <td><textarea name="kr8mb_pers_motivation" id="kr8mb_pers_motivation"><?php echo $motivation; ?></textarea><br><span class="description">Motivation (für Kandidat*innen).</span></td>
+        
     </tr>
     <tr>
 	    <th scope="row"><label for="kr8mb_pers_pos_amt">Amt/Mandat</label></th>
@@ -316,6 +394,9 @@ function kr8mb_pers_position_save( $post_id )
     // Make sure your data is set before trying to save it
 	if( isset( $_POST['kr8mb_pers_excerpt'] ) )
         update_post_meta( $post_id, 'kr8mb_pers_excerpt', esc_html( $_POST['kr8mb_pers_excerpt'] ) );   
+	if( isset( $_POST['kr8mb_pers_motivation'] ) )
+        update_post_meta( $post_id, 'kr8mb_pers_motivation', esc_html( $_POST['kr8mb_pers_motivation'] ) );   
+
 
 	if( isset( $_POST['kr8mb_pers_pos_amt'] ) )
         update_post_meta( $post_id, 'kr8mb_pers_pos_amt', wp_kses( $_POST['kr8mb_pers_pos_amt'], $allowed ) );

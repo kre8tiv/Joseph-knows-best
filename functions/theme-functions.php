@@ -330,8 +330,8 @@ function kr8_theme_support() {
 	add_image_size( 'medium', 400, 600,false );
 	add_image_size( 'large', 1200, 1800, false );
 	
-	add_image_size( 'titelbild', 930, 465, true );
-	add_image_size( 'listenansicht', 350, 220, true );
+	add_image_size( 'titelbild', 1200, 900, false );
+	add_image_size( 'listenansicht', 350, 260, true );
 	
 	
 	
@@ -354,20 +354,20 @@ function kr8_theme_support() {
                 
 
 	// adding post format support
-	/*
+	
 	add_theme_support( 'post-formats',
 		array(
-			'aside',             // title less blurb
-			'gallery',           // gallery of images
-			'link',              // quick link to other site
-			'image',             // an image
-			'quote',             // a quick quote
+			//'aside',             // title less blurb
+			//'gallery',           // gallery of images
+			//'link',              // quick link to other site
+			//'image',             // an image
+			//'quote',             // a quick quote
 			'status',            // a Facebook like status update
-			'video',             // video
-			'audio',             // audio
+			//'video',             // video
+			//'audio',             // audio
 			'chat'               // chat transcript
 		)
-	);*/
+	);
 
 	// wp menus
 	add_theme_support( 'menus' );
@@ -796,6 +796,8 @@ function kr8_get_the_author_posts_link() {
 			wp_deregister_style( 'contact-form-7' );
 		
 	}
+
+
 
 
 

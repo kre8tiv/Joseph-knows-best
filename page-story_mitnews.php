@@ -1,46 +1,47 @@
 <?php
 /*
-Template Name: Startseite aktuellen Mitteilungen, Terminen und PMs
+Template Name: Story mit aktuellen Tabs
 */
 ?>
-
-			<?php get_header(); ?>	
-			<section id="content"><div class="inner wrap clearfix">			
-			<?php if (!is_paged()) { ?>
+			<?php get_header(); ?>
 			
 			
-					<?php if ( has_post_thumbnail() ) {
-							$thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
-							$url = $thumb['0']; ?>
-							<div class="introbg parallax fullpage" style="background-image:url(<?php echo $url ?>);"></div>
-						<div id="single-intro" class="parallax" style="background-image:url(<?php echo $url ?>);"></div>
-					<?php  } else { ?>
-						
-						
-					<? } ?>
-
+			<?php if ( has_post_thumbnail() ): 
+				
+					$thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'full' );
+					$url = $thumb['0']; ?>
+				<div class="fullpage parallax" style="background-image:url(<?php echo $url ?>);" data-parallax="scroll" data-image-src="<?php echo $url ?>">
 					
 					
-			
-			
-				<div id="teaser" class="clearfix">
-				<div class="josephbeuys">
-					<?php dynamic_sidebar('hometeaser'); ?>
+					<div class="story-intro">
+							<div class="inner">
+							<h1><?php the_title(); ?></h1>
+							<p><?php the_excerpt(); ?></p>
+							</div>
+					</div>
+					
+
 				</div>
 				
+				<?php $vz =  get_post_meta( $post->ID, 'kr8mb_page_story_vz', true );   
+					if (! empty ($vz )){ ?><nav class="inhaltvz"><h6 class="hidden">Inhaltsverzeichnis dieses Artikels</h6><ul><?php echo $vz; ?></ul></nav><?php } ?>	
+
+				
+			<?php endif; ?>
+			
+							
+					<?php while (have_posts()): the_post(); ?>
 					
+					    <article id="inhalt"><div class="inner">
+													    <?php the_content(); ?>
 
-			</div>
-			<?php } ?>
-			
-			
-			<!-- <section class="actionbox clearfix">
-			<?php /* dynamic_sidebar('homeone'); */ ?>
-			</section>
-			-->
-			
 
-			<div class="ninecol first clearfix" role="main">
+				
+					    </div></article>	
+			 <?php endwhile; ?>
+			 			    
+			 <section id="content"><div class="inner wrap clearfix">			
+				<div class="ninecol first clearfix" role="main">
 				<div class="responsive-tabs home-tabs">
 					
 					<h2><span>Aktuelles</span></h2>
@@ -112,5 +113,3 @@ Template Name: Startseite aktuellen Mitteilungen, Terminen und PMs
 				
 			</div></section>
 			<?php get_footer(); ?>
-
-
