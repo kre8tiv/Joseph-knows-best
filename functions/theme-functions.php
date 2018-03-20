@@ -753,7 +753,7 @@ function kr8_socialshare() { ?>
 	
 	
 	
-<? }
+<?php }
 						    
 		
 
@@ -796,10 +796,4 @@ function kr8_get_the_author_posts_link() {
 			wp_deregister_style( 'contact-form-7' );
 		
 	}
-
-
-
-
-
-
 ?>
