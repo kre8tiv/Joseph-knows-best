@@ -9,9 +9,9 @@
 					<?php  } else { ?>
 						
 						
-					<? } ?>
+					<?php } ?>
 					
-<? } ?>					
+<?php } ?>					
 					
 					<div id="main" class="ninecol first clearfix" role="main">
 
@@ -39,7 +39,7 @@
 							</div><br>
 							<?php endif; ?>						
 						
-<? } ?>						
+<?php } ?>						
 	
 	
 							<?php if ( has_post_thumbnail() ): ?>

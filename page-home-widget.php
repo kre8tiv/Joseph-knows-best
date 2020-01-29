@@ -17,7 +17,7 @@ Template Name: Startseite aktuellen Mitteilungen, Terminen und PMs
 					<?php  } else { ?>
 						
 						
-					<? } ?>
+					<?php } ?>
 
 					
 					

@@ -8,7 +8,7 @@ Template Name: Listenansicht
 					
 			<section id="content"><div class="inner wrap clearfix">					
 
-							<?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
+							<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 	
 							<div class="archive-title ninecol first">
 								 <h1><?php the_title(); ?></h1>
@@ -25,7 +25,7 @@ Template Name: Listenansicht
 					<?php  } else { ?>
 						
 						
-					<? } ?>
+					<?php } ?>
 					
 
 					

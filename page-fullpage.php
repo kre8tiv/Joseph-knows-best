@@ -19,7 +19,7 @@ Template Name: Einspaltig
 					<?php  } else { ?>
 						
 						
-					<? } ?>
+					<?php } ?>
 					
 
 					
